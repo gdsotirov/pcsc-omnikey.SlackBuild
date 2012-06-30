@@ -1,0 +1,16 @@
+pcsc-omnikey: PC/SC Omnikey (drivers for Omnikey Cardman Smartcard readers)
+pcsc-omnikey:
+pcsc-omnikey: This package contains the necessary ifd_handler for PC/SC Lite
+pcsc-omnikey: to support the following Omnikey Cardman smartcard devices:
+pcsc-omnikey:
+pcsc-omnikey:   * Omnikey Cardman Desktop USB 1021, 3021 and 3121
+pcsc-omnikey:   * Omnikey Cardman Mobile 4040 PCMCIA and 4321 ExpressCard
+pcsc-omnikey:   * Omnikey Cardman Dongle USB 6121
+pcsc-omnikey:   * Omnikey Cardman Trust USB 3621 and 3821
+pcsc-omnikey:   * Omnikey Cardman RFID USB 5121, 5125 and 5321
+pcsc-omnikey:   * Ominkey Cardman Embedded 3111, 3121, 3921, 5121, 5321 and Smart@Link
+pcsc-omnikey: 
+pcsc-omnikey: This package is needed in order to do communication in secure
+pcsc-omnikey: mode with the reader device.
+pcsc-omnikey:
+pcsc-omnikey: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>

@@ -1,0 +1,146 @@
+#!/bin/sh
+#
+# Slackware build script for PC/SC Omnikey Drivers
+# Copyright (C) 2012 Georgi D. Sotirov <gdsotirov@dir.bg>
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+# Visit SlackPack at http://sotirov-bg.net/slackpack/
+#
+# $Id: pcsc-omnikey.SlackBuild,v 1.1 2012/06/30 15:50:21 gsotirov Exp $
+#
+
+. ../../slack-package.conf
+
+NAME=pcsc-omnikey
+VERSION=3
+BUILD=${BUILD:-1}
+ARCH=i686
+
+TMP=${TMP:-/tmp}
+CWD=${CWD:-`pwd`}
+
+if [ ! -e $TMP ]; then
+  mkdir -p $TMP # location to build the source
+fi
+
+PKG=$TMP/package-$NAME
+if [ -e $PKG -a -d $PKG ]; then
+  echo "Package creation directory '$PKG' already exists! Please, move it or remove it."
+  exit 2
+fi
+mkdir -p $PKG
+
+#ifdok_cm4040_lnx-2.0.0.tar.gz
+#ifdokccid_lnx_i686-3.7.0.tar.gz
+#ifdokrfid_lnx_i686-2.10.0.1.tar.gz
+
+# Extract the sources
+cd $TMP
+tar -xvf $CWD/ifdok_cm4040_lnx-*.tar.gz || exit 3
+tar -xvf $CWD/ifdokccid_lnx_${ARCH}-*.tar.gz || exit 3
+tar -xvf $CWD/ifdokrfid_lnx_${ARCH}-*.tar.gz || exit 3
+fix_source
+
+# install
+#./ifdok_cm4040_lnx-2.0.0/
+#./ifdok_cm4040_lnx-2.0.0/src/
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.h.2.4.x
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.c.2.4.x
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.c.2.6.15
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.c.2.6.16
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.c.2.6.17
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.c.2.6.18
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.h.2.6.15
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.h.2.6.16
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.h.2.6.17
+#./ifdok_cm4040_lnx-2.0.0/src/cm4040_cs.h.2.6.18
+#./ifdok_cm4040_lnx-2.0.0/src/makefile.2.4.x
+#./ifdok_cm4040_lnx-2.0.0/src/makefile.2.6.x
+#./ifdok_cm4040_lnx-2.0.0/src/compile.sh
+#./ifdok_cm4040_lnx-2.0.0/smartcard
+#./ifdok_cm4040_lnx-2.0.0/ifdok_cm4040_lnx-2.0.0.so
+#./ifdok_cm4040_lnx-2.0.0/COPYING
+#./ifdok_cm4040_lnx-2.0.0/install
+#./ifdok_cm4040_lnx-2.0.0/README
+# cm4040
+install -D -m 0755 $TMP/ifdok_cm4040*/ifdok_cm4040*.so $PKG/usr/lib/pcsc/drivers/ifdok_cm4040.so
+install -D -m 0644 $TMP/ifdok_cm4040*/COPYING          $PKG/usr/doc/$NAME/COPYING.cm4040
+install -D -m 0644 $TMP/ifdok_cm4040*/README           $PKG/usr/doc/$NAME/README.cm4040
+
+#./ifdokccid_lnx_i686-3.7.0/
+#./ifdokccid_lnx_i686-3.7.0/install
+#./ifdokccid_lnx_i686-3.7.0/README
+#./ifdokccid_lnx_i686-3.7.0/ok_pcscd_hotplug.sh
+#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/
+#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/
+#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Info.plist
+#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Linux/
+#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Linux/ifdokccid.so
+#./ifdokccid_lnx_i686-3.7.0/omnikey.ini
+#./ifdokccid_lnx_i686-3.7.0/HID_OK_Drivers_EULA
+#./ifdokccid_lnx_i686-3.7.0/z98_omnikey.rules
+# ccid
+install -D -m 0644 $TMP/ifdokccid*/z98_omnikey.rules $PKG/lib/udev/rules.d/z98_omnikey.rules
+sed -i -e 's|SYSFS|ATTRS|g' -e 's|idProduct}="|idProduct}=="|g' -e 's|/usr/local|/usr|g' $PKG/lib/udev/rules.d/z98_omnikey.rules
+cp -a $TMP/ifdokccid*/*.bundle $PKG/usr/lib/pcsc/drivers
+install -D -m 0644 $TMP/ifdokccid*/HID_OK_Drivers_EULA $PKG/usr/doc/$NAME/COPYING.ccid
+install -D -m 0644 $TMP/ifdokccid*/README              $PKG/usr/doc/$NAME/README.ccid
+
+#./ifdokrfid_lnx_i686-2.10.0.1/
+#./ifdokrfid_lnx_i686-2.10.0.1/HID_OK_Drivers_EULA
+#./ifdokrfid_lnx_i686-2.10.0.1/cmrfid.ini
+#./ifdokrfid_lnx_i686-2.10.0.1/install
+#./ifdokrfid_lnx_i686-2.10.0.1/ok_pcscd_hotplug.sh
+#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/
+#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/
+#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Info.plist
+#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Linux/
+#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Linux/ifdokrfid.so
+#./ifdokrfid_lnx_i686-2.10.0.1/z98_omnikey_rfid.rules
+#./ifdokrfid_lnx_i686-2.10.0.1/README
+# ifrd
+install -D -m 0644 $TMP/ifdokrfid*/cmrfid.ini $PKG/etc/cmrfid.in
+cp -a $TMP/ifdokrfid*/*.bundle $PKG/usr/lib/pcsc/drivers
+install -D -m 0644 $TMP/ifdokrfid*/HID_OK_Drivers_EULA $PKG/usr/doc/$NAME/COPYING.rfid
+install -D -m 0644 $TMP/ifdokrfid*/README              $PKG/usr/doc/$NAME/README.rfid
+
+# Prepare
+( cd $PKG; strip_lib )
+
+mkdir -p $PKG/install
+install -m 644 $CWD/slack-desc     $PKG/install/slack-desc
+install -m 644 $CWD/slack-required $PKG/install/slack-required
+
+mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
+install -m 644 $CWD/slack-desc       $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
+install -m 644 $CWD/slack-required   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
+install -m 644 $CWD/slack-suggests   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-suggests
+install -m 644 $CWD/slack-conflicts  $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-conflicts
+install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
+
+cd $PKG
+PKGNAME=$NAME-$VERSION-$ARCH-$BUILD$MYIN
+makepkg -l y -c n $PKG_DIR/$PKGNAME.txz
+cd $PKG_DIR
+md5sum $PKGNAME.txz > $PKGNAME.txz.md5
+cat $PKG/install/slack-desc > $PKG_DIR/$PKGNAME.txt
+
+if [ "$1" == "--cleanup" ]; then
+  rm -r $TMP/ifdok_cm4040*
+  rm -r $TMP/ifdokccid*
+  rm -r $TMP/ifdokrfid*
+  rm -r $PKG
+fi
