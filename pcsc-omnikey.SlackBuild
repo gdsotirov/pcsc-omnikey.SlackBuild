@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.4 2014/07/26 18:56:24 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.5 2014/07/26 19:18:49 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=pcsc-omnikey
-VERSION=3.9
+VERSION=4.0.5.4
 BUILD=${BUILD:-1}
 if [ "$ARCH" == "i486" ]; then
   ARCH_TAR="i686"
@@ -51,7 +51,7 @@ fi
 mkdir -p $PKG
 
 #ifdok_cm4040_lnx-2.0.0.tar.gz       ifdok_cm4040_lnx_x64-2.0.0.tar.gz
-#ifdokccid_lnx_i686-3.7.0.tar.gz     ifdokccid_lnx_x64-3.7.0.tar.gz
+#ifdokccid_linux_i686-3.7.0.tar.gz   ifdokccid_linux_x86_64-3.7.0.tar.gz
 #ifdokrfid_lnx_i686-2.10.0.1.tar.gz  ifdokrfid_lnx_x64-2.10.0.1.tar.gz
 
 # Extract the sources
@@ -61,7 +61,7 @@ if [ "$ARCH" == "i486" ]; then
 else
   tar -xvf $CWD/ifdok_cm4040_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fi
-tar -xvf $CWD/ifdokccid_lnx_${ARCH_TAR}-*.tar.gz || exit 3
+tar -xvf $CWD/ifdokccid_linux_${ARCH}-*.tar.gz || exit 3
 tar -xvf $CWD/ifdokrfid_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fix_source
 
