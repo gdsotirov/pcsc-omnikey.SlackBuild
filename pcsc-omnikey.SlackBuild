@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.1 2012/06/30 15:50:21 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.2 2014/07/26 18:19:05 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=pcsc-omnikey
-VERSION=3
+VERSION=3.7
 BUILD=${BUILD:-1}
 ARCH=i686
 
