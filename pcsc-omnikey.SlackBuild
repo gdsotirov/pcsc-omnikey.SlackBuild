@@ -19,7 +19,7 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.5 2014/07/26 19:18:49 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.6 2014/07/26 19:32:54 gsotirov Exp $
 #
 
 . ../../slack-package.conf
@@ -61,7 +61,11 @@ if [ "$ARCH" == "i486" ]; then
 else
   tar -xvf $CWD/ifdok_cm4040_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fi
-tar -xvf $CWD/ifdokccid_linux_${ARCH}-*.tar.gz || exit 3
+if [ "$ARCH" == "i486" ]; then
+  tar -xvf $CWD/ifdokccid_linux_${ARCH_TAR}-*.tar.gz || exit 3
+else
+  tar -xvf $CWD/ifdokccid_linux_${ARCH}-*.tar.gz || exit 3
+fi
 tar -xvf $CWD/ifdokrfid_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fix_source
 
