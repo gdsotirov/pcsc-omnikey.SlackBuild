@@ -19,13 +19,13 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.3 2014/07/26 18:38:17 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.4 2014/07/26 18:56:24 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=pcsc-omnikey
-VERSION=3.7
+VERSION=3.9
 BUILD=${BUILD:-1}
 if [ "$ARCH" == "i486" ]; then
   ARCH_TAR="i686"
