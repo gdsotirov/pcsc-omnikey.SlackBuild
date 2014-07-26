@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Slackware build script for PC/SC Omnikey Drivers
-# Copyright (C) 2012 Georgi D. Sotirov <gdsotirov@dir.bg>
+# Copyright (C) 2012,2014 Georgi D. Sotirov <gdsotirov@dir.bg>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.2 2014/07/26 18:19:05 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.3 2014/07/26 18:38:17 gsotirov Exp $
 #
 
 . ../../slack-package.conf
@@ -27,7 +27,14 @@
 NAME=pcsc-omnikey
 VERSION=3.7
 BUILD=${BUILD:-1}
-ARCH=i686
+if [ "$ARCH" == "i486" ]; then
+  ARCH_TAR="i686"
+elif [ "$ARCH" == "x86_64" ]; then
+  ARCH_TAR="x64"
+else
+  echo "Error: Unsupported architecture!"
+  exit 1
+fi
 
 TMP=${TMP:-/tmp}
 CWD=${CWD:-`pwd`}
@@ -43,15 +50,19 @@ if [ -e $PKG -a -d $PKG ]; then
 fi
 mkdir -p $PKG
 
-#ifdok_cm4040_lnx-2.0.0.tar.gz
-#ifdokccid_lnx_i686-3.7.0.tar.gz
-#ifdokrfid_lnx_i686-2.10.0.1.tar.gz
+#ifdok_cm4040_lnx-2.0.0.tar.gz       ifdok_cm4040_lnx_x64-2.0.0.tar.gz
+#ifdokccid_lnx_i686-3.7.0.tar.gz     ifdokccid_lnx_x64-3.7.0.tar.gz
+#ifdokrfid_lnx_i686-2.10.0.1.tar.gz  ifdokrfid_lnx_x64-2.10.0.1.tar.gz
 
 # Extract the sources
 cd $TMP
-tar -xvf $CWD/ifdok_cm4040_lnx-*.tar.gz || exit 3
-tar -xvf $CWD/ifdokccid_lnx_${ARCH}-*.tar.gz || exit 3
-tar -xvf $CWD/ifdokrfid_lnx_${ARCH}-*.tar.gz || exit 3
+if [ "$ARCH" == "i486" ]; then
+  tar -xvf $CWD/ifdok_cm4040_lnx-*.tar.gz || exit 3
+else
+  tar -xvf $CWD/ifdok_cm4040_lnx_${ARCH_TAR}-*.tar.gz || exit 3
+fi
+tar -xvf $CWD/ifdokccid_lnx_${ARCH_TAR}-*.tar.gz || exit 3
+tar -xvf $CWD/ifdokrfid_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fix_source
 
 # install
@@ -76,7 +87,7 @@ fix_source
 #./ifdok_cm4040_lnx-2.0.0/install
 #./ifdok_cm4040_lnx-2.0.0/README
 # cm4040
-install -D -m 0755 $TMP/ifdok_cm4040*/ifdok_cm4040*.so $PKG/usr/lib/pcsc/drivers/ifdok_cm4040.so
+install -D -m 0755 $TMP/ifdok_cm4040*/ifdok_cm4040*.so $PKG/usr/lib${LIBDIRSUFFIX}/pcsc/drivers/ifdok_cm4040.so
 install -D -m 0644 $TMP/ifdok_cm4040*/COPYING          $PKG/usr/doc/$NAME/COPYING.cm4040
 install -D -m 0644 $TMP/ifdok_cm4040*/README           $PKG/usr/doc/$NAME/README.cm4040
 
@@ -95,7 +106,7 @@ install -D -m 0644 $TMP/ifdok_cm4040*/README           $PKG/usr/doc/$NAME/README
 # ccid
 install -D -m 0644 $TMP/ifdokccid*/z98_omnikey.rules $PKG/lib/udev/rules.d/z98_omnikey.rules
 sed -i -e 's|SYSFS|ATTRS|g' -e 's|idProduct}="|idProduct}=="|g' -e 's|/usr/local|/usr|g' $PKG/lib/udev/rules.d/z98_omnikey.rules
-cp -a $TMP/ifdokccid*/*.bundle $PKG/usr/lib/pcsc/drivers
+cp -a $TMP/ifdokccid*/*.bundle $PKG/usr/lib${LIBDIRSUFFIX}/pcsc/drivers
 install -D -m 0644 $TMP/ifdokccid*/HID_OK_Drivers_EULA $PKG/usr/doc/$NAME/COPYING.ccid
 install -D -m 0644 $TMP/ifdokccid*/README              $PKG/usr/doc/$NAME/README.ccid
 
@@ -113,7 +124,7 @@ install -D -m 0644 $TMP/ifdokccid*/README              $PKG/usr/doc/$NAME/README
 #./ifdokrfid_lnx_i686-2.10.0.1/README
 # ifrd
 install -D -m 0644 $TMP/ifdokrfid*/cmrfid.ini $PKG/etc/cmrfid.in
-cp -a $TMP/ifdokrfid*/*.bundle $PKG/usr/lib/pcsc/drivers
+cp -a $TMP/ifdokrfid*/*.bundle $PKG/usr/lib${LIBDIRSUFFIX}/pcsc/drivers
 install -D -m 0644 $TMP/ifdokrfid*/HID_OK_Drivers_EULA $PKG/usr/doc/$NAME/COPYING.rfid
 install -D -m 0644 $TMP/ifdokrfid*/README              $PKG/usr/doc/$NAME/README.rfid
 
@@ -121,13 +132,13 @@ install -D -m 0644 $TMP/ifdokrfid*/README              $PKG/usr/doc/$NAME/README
 ( cd $PKG; strip_lib )
 
 mkdir -p $PKG/install
-install -m 644 $CWD/slack-desc     $PKG/install/slack-desc
-install -m 644 $CWD/slack-required $PKG/install/slack-required
+install -m 644 $CWD/slack-desc      $PKG/install/slack-desc
+install -m 644 $CWD/slack-required  $PKG/install/slack-required
+install -m 644 $CWD/slack-conflicts $PKG/install/slack-conflicts
 
 mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
 install -m 644 $CWD/slack-desc       $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
 install -m 644 $CWD/slack-required   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
-install -m 644 $CWD/slack-suggests   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-suggests
 install -m 644 $CWD/slack-conflicts  $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-conflicts
 install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
 
