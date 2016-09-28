@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Slackware build script for PC/SC Omnikey Drivers
-# Copyright (C) 2012,2014 Georgi D. Sotirov <gdsotirov@dir.bg>
+# Copyright (C) 2012-2016 Georgi D. Sotirov <gdsotirov@dir.bg>
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,15 +19,14 @@
 #
 # Visit SlackPack at http://sotirov-bg.net/slackpack/
 #
-# $Id: pcsc-omnikey.SlackBuild,v 1.6 2014/07/26 19:32:54 gsotirov Exp $
+# $Id: pcsc-omnikey.SlackBuild,v 1.7 2016/09/28 18:31:08 gsotirov Exp $
 #
 
 . ../../slack-package.conf
 
 NAME=pcsc-omnikey
-VERSION=4.0.5.4
-BUILD=${BUILD:-1}
-if [ "$ARCH" == "i486" ]; then
+VERSION=4.2.8
+if [ "$ARCH" == "i586" ]; then
   ARCH_TAR="i686"
 elif [ "$ARCH" == "x86_64" ]; then
   ARCH_TAR="x64"
@@ -35,6 +34,7 @@ else
   echo "Error: Unsupported architecture!"
   exit 1
 fi
+BUILD=${BUILD:-1}
 
 TMP=${TMP:-/tmp}
 CWD=${CWD:-`pwd`}
@@ -43,7 +43,7 @@ if [ ! -e $TMP ]; then
   mkdir -p $TMP # location to build the source
 fi
 
-PKG=$TMP/package-$NAME
+PKG=$TMP/package-${NAME}
 if [ -e $PKG -a -d $PKG ]; then
   echo "Package creation directory '$PKG' already exists! Please, move it or remove it."
   exit 2
@@ -51,17 +51,17 @@ fi
 mkdir -p $PKG
 
 #ifdok_cm4040_lnx-2.0.0.tar.gz       ifdok_cm4040_lnx_x64-2.0.0.tar.gz
-#ifdokccid_linux_i686-3.7.0.tar.gz   ifdokccid_linux_x86_64-3.7.0.tar.gz
-#ifdokrfid_lnx_i686-2.10.0.1.tar.gz  ifdokrfid_lnx_x64-2.10.0.1.tar.gz
+#ifdokccid_linux_i686-4.2.8.tar.gz   ifdokccid_linux_x86_64-4.2.8.tar.gz
+#ifdokrfid_lnx_i686-2.11.0.tar.gz    ifdokrfid_lnx_x64-2.11.0.tar.gz
 
 # Extract the sources
 cd $TMP
-if [ "$ARCH" == "i486" ]; then
+if [ "$ARCH" == "i586" ]; then
   tar -xvf $CWD/ifdok_cm4040_lnx-*.tar.gz || exit 3
 else
   tar -xvf $CWD/ifdok_cm4040_lnx_${ARCH_TAR}-*.tar.gz || exit 3
 fi
-if [ "$ARCH" == "i486" ]; then
+if [ "$ARCH" == "i586" ]; then
   tar -xvf $CWD/ifdokccid_linux_${ARCH_TAR}-*.tar.gz || exit 3
 else
   tar -xvf $CWD/ifdokccid_linux_${ARCH}-*.tar.gz || exit 3
@@ -95,37 +95,39 @@ install -D -m 0755 $TMP/ifdok_cm4040*/ifdok_cm4040*.so $PKG/usr/lib${LIBDIRSUFFI
 install -D -m 0644 $TMP/ifdok_cm4040*/COPYING          $PKG/usr/doc/$NAME/COPYING.cm4040
 install -D -m 0644 $TMP/ifdok_cm4040*/README           $PKG/usr/doc/$NAME/README.cm4040
 
-#./ifdokccid_lnx_i686-3.7.0/
-#./ifdokccid_lnx_i686-3.7.0/install
-#./ifdokccid_lnx_i686-3.7.0/README
-#./ifdokccid_lnx_i686-3.7.0/ok_pcscd_hotplug.sh
-#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/
-#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/
-#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Info.plist
-#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Linux/
-#./ifdokccid_lnx_i686-3.7.0/ifdokccid_lnx_i686-3.7.0.bundle/Contents/Linux/ifdokccid.so
-#./ifdokccid_lnx_i686-3.7.0/omnikey.ini
-#./ifdokccid_lnx_i686-3.7.0/HID_OK_Drivers_EULA
-#./ifdokccid_lnx_i686-3.7.0/z98_omnikey.rules
+#./ifdokccid_linux_i686-v4.2.8/
+#./ifdokccid_linux_i686-v4.2.8/README.html
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/Info.plist
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/Linux/
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/Linux/ifdokccid.so
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/tools/
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/tools/ifdok_xmled
+#./ifdokccid_linux_i686-v4.2.8/ifdokccid_linux_i686-v4.2.8.bundle/Contents/tools/ifdok_bugreport
+#./ifdokccid_linux_i686-v4.2.8/ok_pcscd_hotplug.sh
+#./ifdokccid_linux_i686-v4.2.8/omnikey.ini
+#./ifdokccid_linux_i686-v4.2.8/HID_OK_Drivers_EULA
+#./ifdokccid_linux_i686-v4.2.8/z98_omnikey.rules
+#./ifdokccid_linux_i686-v4.2.8/install
 # ccid
 install -D -m 0644 $TMP/ifdokccid*/z98_omnikey.rules $PKG/lib/udev/rules.d/z98_omnikey.rules
 sed -i -e 's|SYSFS|ATTRS|g' -e 's|idProduct}="|idProduct}=="|g' -e 's|/usr/local|/usr|g' $PKG/lib/udev/rules.d/z98_omnikey.rules
 cp -a $TMP/ifdokccid*/*.bundle $PKG/usr/lib${LIBDIRSUFFIX}/pcsc/drivers
 install -D -m 0644 $TMP/ifdokccid*/HID_OK_Drivers_EULA $PKG/usr/doc/$NAME/COPYING.ccid
-install -D -m 0644 $TMP/ifdokccid*/README              $PKG/usr/doc/$NAME/README.ccid
 
-#./ifdokrfid_lnx_i686-2.10.0.1/
-#./ifdokrfid_lnx_i686-2.10.0.1/HID_OK_Drivers_EULA
-#./ifdokrfid_lnx_i686-2.10.0.1/cmrfid.ini
-#./ifdokrfid_lnx_i686-2.10.0.1/install
-#./ifdokrfid_lnx_i686-2.10.0.1/ok_pcscd_hotplug.sh
-#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/
-#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/
-#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Info.plist
-#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Linux/
-#./ifdokrfid_lnx_i686-2.10.0.1/ifdokrfid_lnx_i686-2.10.0.1.bundle/Contents/Linux/ifdokrfid.so
-#./ifdokrfid_lnx_i686-2.10.0.1/z98_omnikey_rfid.rules
-#./ifdokrfid_lnx_i686-2.10.0.1/README
+#./ifdokrfid_lnx_i686-2.11.0/
+#./ifdokrfid_lnx_i686-2.11.0/install
+#./ifdokrfid_lnx_i686-2.11.0/z98_omnikey_rfid.rules
+#./ifdokrfid_lnx_i686-2.11.0/ifdokrfid_lnx_i686-2.11.0.bundle/
+#./ifdokrfid_lnx_i686-2.11.0/ifdokrfid_lnx_i686-2.11.0.bundle/Contents/
+#./ifdokrfid_lnx_i686-2.11.0/ifdokrfid_lnx_i686-2.11.0.bundle/Contents/Info.plist
+#./ifdokrfid_lnx_i686-2.11.0/ifdokrfid_lnx_i686-2.11.0.bundle/Contents/Linux/
+#./ifdokrfid_lnx_i686-2.11.0/ifdokrfid_lnx_i686-2.11.0.bundle/Contents/Linux/ifdokrfid.so
+#./ifdokrfid_lnx_i686-2.11.0/ok_pcscd_hotplug.sh
+#./ifdokrfid_lnx_i686-2.11.0/cmrfid.ini
+#./ifdokrfid_lnx_i686-2.11.0/HID_OK_Drivers_EULA
+#./ifdokrfid_lnx_i686-2.11.0/README
 # ifrd
 install -D -m 0644 $TMP/ifdokrfid*/cmrfid.ini $PKG/etc/cmrfid.in
 cp -a $TMP/ifdokrfid*/*.bundle $PKG/usr/lib${LIBDIRSUFFIX}/pcsc/drivers
@@ -140,18 +142,19 @@ install -m 644 $CWD/slack-desc      $PKG/install/slack-desc
 install -m 644 $CWD/slack-required  $PKG/install/slack-required
 install -m 644 $CWD/slack-conflicts $PKG/install/slack-conflicts
 
-mkdir -p $PKG/usr/src/slackbuilds/$NAME-$VERSION
-install -m 644 $CWD/slack-desc       $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-desc
-install -m 644 $CWD/slack-required   $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-required
-install -m 644 $CWD/slack-conflicts  $PKG/usr/src/slackbuilds/$NAME-$VERSION/slack-conflicts
-install -m 644 $CWD/$NAME.SlackBuild $PKG/usr/src/slackbuilds/$NAME-$VERSION/$NAME.SlackBuild
+SBDIR=$PKG/usr/src/slackbuilds/${NAME}-${VERSION}
+mkdir -p $SBDIR
+install -m 644 $CWD/slack-desc         $SBDIR/slack-desc
+install -m 644 $CWD/slack-required     $SBDIR/slack-required
+install -m 644 $CWD/slack-conflicts    $SBDIR/slack-conflicts
+install -m 644 $CWD/${NAME}.SlackBuild $SBDIR/${NAME}.SlackBuild
 
 cd $PKG
-PKGNAME=$NAME-$VERSION-$ARCH-$BUILD$MYIN
-makepkg -l y -c n $PKG_DIR/$PKGNAME.txz
+PKGNAME=${NAME}-${VERSION}-${ARCH}-${BUILD}${MYIN}
+makepkg -l y -c n $PKG_DIR/${PKGNAME}.txz
 cd $PKG_DIR
-md5sum $PKGNAME.txz > $PKGNAME.txz.md5
-cat $PKG/install/slack-desc > $PKG_DIR/$PKGNAME.txt
+md5sum ${PKGNAME}.txz > ${PKGNAME}.txz.md5
+cat $PKG/install/slack-desc > $PKG_DIR/${PKGNAME}.txt
 
 if [ "$1" == "--cleanup" ]; then
   rm -r $TMP/ifdok_cm4040*
