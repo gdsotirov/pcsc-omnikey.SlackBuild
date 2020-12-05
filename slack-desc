@@ -13,4 +13,4 @@ pcsc-omnikey:
 pcsc-omnikey: This package is needed in order to do communication in secure
 pcsc-omnikey: mode with the reader device.
 pcsc-omnikey:
-pcsc-omnikey: Packaged by Georgi D. Sotirov <gdsotirov@dir.bg>
+pcsc-omnikey: Packaged by Georgi D. Sotirov <gdsotirov@gmail.com>
